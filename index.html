@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <meta lang="ru" />
+    <title>Онлайн тест</title>
+    <style>
+      h1 {
+        text-align: center;
+      }
+
+      #form {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #form > button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      #quiz > p {
+        font-size: large;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Ответьте на следующие вопросы:</h1>
+    <form id="form">
+      <section id="quiz"></section>
+      <br />
+      <button type="submit">Отправить</button>
+    </form>
+    <script>
+      fetch('https://my-json-server.typicode.com/amankkg/test-covid19-quiz-demo/questions')
+        .then(response => response.json())
+        .then(questions => {
+          const quiz = document.querySelector('#quiz')
+
+          for (const q of questions) {
+            const p = document.createElement('p')
+
+            p.innerText = q.text
+
+            quiz.appendChild(p)
+
+            for (let i = 0; i < q.answers.length; i++) {
+              const id = `${q.id}-${i}`
+              const input = document.createElement('input')
+
+              input.setAttribute('type', 'radio'),
+              input.setAttribute('required', 'required'),
+              input.setAttribute('name', q.id)
+              input.setAttribute('value', i)
+              input.setAttribute('id', id)
+              quiz.appendChild(input)
+
+              const label = document.createElement('label')
+              
+              label.innerText = q.answers[i]
+              label.setAttribute('for', id)
+              quiz.appendChild(label)
+
+              const br = document.createElement('br')
+              
+              quiz.appendChild(br)
+            }
+          }
+        })
+    </script>
+  </body>
+</html>
